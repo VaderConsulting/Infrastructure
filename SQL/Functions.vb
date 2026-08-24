@@ -77,7 +77,7 @@ Public Class Functions
         SelectQuery &= " FROM         DatabaseDetails"
         SelectQuery &= " WHERE     (EndDate IS NULL)"
 
-        ConnectionString = "REDACTED" & DatabaseServer & ";Database=StratatelControl_Test; User ID="REDACTED";Password="REDACTED";Max Pool Size=5000;"
+        ConnectionString = "Server=" & DatabaseServer & ";Database=StratatelControl_Test; User ID=" & Username & ";Password=" & Password & ";Max Pool Size=5000;"
 
         ' ADO.NET Objects
         Dim DataConnection As New SqlConnection(ConnectionString)
@@ -221,7 +221,7 @@ Public Class Functions
         Dim SelectQuery As String
         SelectQuery = "SELECT     DatabaseDetails.UID, DatabaseDetails.DatabaseName, DatabaseDetails.StartDate, DatabaseDetails.EndDate, DatabaseDetails.ConnectionString, SiteDetails.SiteID"
         SelectQuery &= " FROM         DatabaseDetails INNER JOIN"
-        SelectQuery &= "   SiteDetails ON DatabaseDetails.UID =REDACTED"
+        SelectQuery &= "   SiteDetails ON DatabaseDetails.UID = SiteDetails.DatabaseID"
         SelectQuery &= " WHERE     (DatabaseDetails.DatabaseName = '" & DatabaseName & "')"
 
         ' ADO.NET Objects

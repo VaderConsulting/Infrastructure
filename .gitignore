@@ -31,25 +31,6 @@ packages/
 *.bak
 
 # Redacted originals (see *.example files)
-SmallDHCPServer_CodeProject/SmallDHCPServer_C/frmMain.cs
-SmallDHCPServer_CodeProject/Backup/SmallDHCPServer_C/clsUdpAsync.cs
-SmallDHCPServer_CodeProject/Backup/SmallDHCPServer_C/Form1.cs
-SmallDHCPServer_CodeProject/Backup/SmallDHCPServer_C/cDHCP.cs
-Test/Form1.vb
-Directory/User.vb
-Common/Functions.vb
-ResetPassword/Form1.Designer.vb
-ResetPassword/ResetPassword.vbproj.vspscc
-AutoDiscovery-app-Client/client-side.cs
-AutoDiscovery-app-Client/Client Program.cs
-AutoDiscovery-app-Client/TCP Client.cs
-AutoDiscovery-app-Client/AutoDiscovery-app-Client.eof
-AutoDiscovery-app-Server/Server Program.cs
-AutoDiscovery-app-Server/AutoDiscovery-app-Server.eof
-AutoDiscovery-app-Server/server-side.cs
 Security/Functions.vb
 Security/frmLogon.vb
-Security/frmLogon.designer.vb
-ARSoft.Tools.Net/ARSoft.Tools.Net/Dns/RecordType.cs
-ARSoft.Tools.Net/ARSoft.Tools.Net/Dns/EDns/OwnerOption.cs
-SQL/Functions.vb
+Test/Form1.vb

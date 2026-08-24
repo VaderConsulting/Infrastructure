@@ -122,7 +122,7 @@ namespace ARSoft.Tools.Net.Dns
 			Sequence = sequence;
 			PrimaryMacAddress = primaryMacAddress;
 			WakeupMacAddress = wakeupMacAddress;
-			Password =REDACTED;
+			Password = password;
 		}
 
 		internal override void ParseData(byte[] resultData, int startPosition, int length)
@@ -133,7 +133,7 @@ namespace ARSoft.Tools.Net.Dns
 			if (length > 8)
 				WakeupMacAddress = new PhysicalAddress(DnsMessageBase.ParseByteData(resultData, ref startPosition, 6));
 			if (length > 14)
-				Password =REDACTED ref startPosition, length - 14);
+				Password = DnsMessageBase.ParseByteData(resultData, ref startPosition, length - 14);
 		}
 
 		internal override ushort DataLength => (ushort) (8 + (WakeupMacAddress != null ? 6 : 0) + (Password?.Length ?? 0));

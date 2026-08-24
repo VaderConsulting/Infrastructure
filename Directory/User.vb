@@ -43,7 +43,7 @@ Public Class User
     '        Return _DirectoryPassword
     '    End Get
     '    Set(ByVal value As String)
-    '        _DirectoryPassword =REDACTED
+    '        _DirectoryPassword = value
     '    End Set
     'End Property
 

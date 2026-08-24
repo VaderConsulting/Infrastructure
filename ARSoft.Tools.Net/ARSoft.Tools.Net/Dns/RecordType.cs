@@ -332,13 +332,13 @@ namespace ARSoft.Tools.Net.Dns
 
 		/// <summary>
 		///   <para>Endpoint identifier</para>
-		///   <para>Defined by Michael Patton, &lt;redacted@example.com&gt;, June 1995</para>
+		///   <para>Defined by Michael Patton, &lt;map@bbn.com&gt;, June 1995</para>
 		/// </summary>
 		Eid = 31, // not supported yet
 
 		/// <summary>
 		///   <para>Nimrod locator</para>
-		///   <para>Defined by Michael Patton, &lt;redacted@example.com&gt;, June 1995</para>
+		///   <para>Defined by Michael Patton, &lt;map@bbn.com&gt;, June 1995</para>
 		/// </summary>
 		NimLoc = 32, // not supported yet
 
@@ -420,7 +420,7 @@ namespace ARSoft.Tools.Net.Dns
 
 		/// <summary>
 		///   <para>SINK</para>
-		///   <para>Defined by Donald E. Eastlake, III &lt;redacted@example.com&gt;, January 1995, November 1997</para>
+		///   <para>Defined by Donald E. Eastlake, III &lt;d3e3e3@gmail.com&gt;, January 1995, November 1997</para>
 		/// </summary>
 		Sink = 40, // not supported yet
 
@@ -553,19 +553,19 @@ namespace ARSoft.Tools.Net.Dns
 
 		/// <summary>
 		///   <para>NINFO</para>
-		///   <para>Defined by Jim Reid, &lt;redacted@example.com&gt;, 21 January 2008</para>
+		///   <para>Defined by Jim Reid, &lt;jim@telnic.org&gt;, 21 January 2008</para>
 		/// </summary>
 		NInfo = 56, // not supported yet
 
 		/// <summary>
 		///   <para>RKEY</para>
-		///   <para>Defined by Jim Reid, &lt;redacted@example.com&gt;, 21 January 2008</para>
+		///   <para>Defined by Jim Reid, &lt;jim@telnic.org&gt;, 21 January 2008</para>
 		/// </summary>
 		RKey = 57, // not supported yet
 
 		/// <summary>
 		///   <para>Trust anchor link</para>
-		///   <para>Defined by Wouter Wijngaards, &lt;redacted@example.com&gt;, 2010-02-17</para>
+		///   <para>Defined by Wouter Wijngaards, &lt;wouter@nlnetlabs.nl&gt;, 2010-02-17</para>
 		/// </summary>
 		// ReSharper disable once InconsistentNaming
 		TALink = 58, // not supported yet
@@ -629,7 +629,7 @@ namespace ARSoft.Tools.Net.Dns
 		///   <para>UID</para>
 		///   <para>IANA-Reserved</para>
 		/// </summary>
-		UId =REDACTED // not supported yet
+		UId = 101, // not supported yet
 
 		/// <summary>
 		///   <para>GID</para>
@@ -787,7 +787,7 @@ namespace ARSoft.Tools.Net.Dns
 
 		/// <summary>
 		///   <para>DNSSEC trust authorities</para>
-		///   <para>Defined by Sam Weiler, &lt;redacted@example.com&gt;</para>
+		///   <para>Defined by Sam Weiler, &lt;weiler+iana@tislabs.com&gt;</para>
 		/// </summary>
 		Ta = 32768, // not supported yet
 

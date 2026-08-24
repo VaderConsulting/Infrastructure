@@ -28,7 +28,7 @@ Partial Class frmLogon
         Me.lblIncorrect = New System.Windows.Forms.Label
         Me.Cancel = New System.Windows.Forms.Button
         Me.OK = New System.Windows.Forms.Button
-        Me.txtPassword =REDACTED System.Windows.Forms.TextBox
+        Me.txtPassword = New System.Windows.Forms.TextBox
         Me.txtUsername = New System.Windows.Forms.TextBox
         Me.UsernameScope = New System.Windows.Forms.Label
         Me.PasswordLabel = New System.Windows.Forms.Label

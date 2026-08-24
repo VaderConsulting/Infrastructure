@@ -3,7 +3,7 @@
  * (C)  2005-2007, Marcello Cauchi Savona
  *
  * For terms and usage, please see the LICENSE file
- * provided alongwith or contact redacted@example.com
+ * provided alongwith or contact marcello_c@hotmail.com
  * http://www.cheekyneedle.com
  * 
  */

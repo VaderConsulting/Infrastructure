@@ -29,7 +29,7 @@ Partial Class frmMain
         Me.radLocationLocal = New System.Windows.Forms.RadioButton
         Me.radLocationCentral = New System.Windows.Forms.RadioButton
         Me.Label3 = New System.Windows.Forms.Label
-        Me.txtPassword =REDACTED System.Windows.Forms.TextBox
+        Me.txtPassword = New System.Windows.Forms.TextBox
         Me.btnConnect = New System.Windows.Forms.Button
         Me.btnReset = New System.Windows.Forms.Button
         Me.Label5 = New System.Windows.Forms.Label

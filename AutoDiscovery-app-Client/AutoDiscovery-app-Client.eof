@@ -26,7 +26,7 @@
   <ProxyUserID></ProxyUserID>
   <SaveLogFile>True</SaveLogFile>
   <ShowOptions>18446744073709551615</ShowOptions>
-  <SMTPFrom>redacted@example.com</SMTPFrom>
+  <SMTPFrom>eurekalog@gmail.com</SMTPFrom>
   <SMTPHost></SMTPHost>
   <SMTPPassword></SMTPPassword>
   <SMTPPort>25</SMTPPort>

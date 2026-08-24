@@ -224,7 +224,7 @@ Partial Public Class Functions
             OutputString = OutputString.Replace("[PROGRAMS]", "")
         End Try
 
-        Dim NewGUID As System.Guid =REDACTED
+        Dim NewGUID As System.Guid = System.Guid.NewGuid
 
         OutputString = OutputString.Replace("#GUID#", NewGUID.ToString)
         OutputString = OutputString.Replace("#ALLUSERSAPPDATA#", My.Computer.FileSystem.SpecialDirectories.AllUsersApplicationData)

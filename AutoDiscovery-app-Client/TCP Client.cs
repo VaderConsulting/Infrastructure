@@ -6,7 +6,7 @@
 // Source-code for client tcp -- TCP Client helper class
 //
 // Author: Bruno Ratnieks
-// Contact: redacted@example.com
+// Contact: bruno@sniffer.net
 // Company: Sniffer Networks do Brasil Ltda. - SNF
 //
 // The following code may be used freely for any purpose.
