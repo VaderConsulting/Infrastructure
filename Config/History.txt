@@ -1,0 +1,14 @@
+﻿### Please choose from the following Entry types:
+### Bugfix
+### Enhancement
+### Change
+
+----------------------------------------------------------------------------------------------------------------------------------------
+Version    Date         Initials    Type          Class               Description
+----------------------------------------------------------------------------------------------------------------------------------------
+1.0.0.0    12 Oct 09    DR          Enhancement   Solution            Initial Version
+1.0.0.1    12 Feb 10    DR          Bugfix        Functions           SaveConfigAttribute could not save.
+1.0.1.2    08 Mar 10    DR          Enhancement   Functions           Added LoadConfigSection(ByVal ConfigurationFilename As String, _
+                                                                                              ByVal SectionName As String, _
+                                                                                              ByRef DuplicateNameFound As Boolean, _
+                                                                                              Optional ByVal NameFilter As String = "*") As Collections.Specialized.OrderedDictionary

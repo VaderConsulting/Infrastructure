@@ -1,0 +1,18 @@
+﻿### Please choose from the following Entry types:
+### Bugfix
+### Enhancement
+### Change
+
+----------------------------------------------------------------------------------------------------------------------------------------
+Version    Date         Initials    Type          Class               Description
+----------------------------------------------------------------------------------------------------------------------------------------
+1.0.0.0    06 Oct 09    DR          Enhancement   Solution            Initial Version
+1.0.0.1    09 Feb 10    DR          Bugfix        Functions           LOGGING_LEVEL Updated to reflect changes made in Utility.DLL
+1.1.1.2    18 Feb 10    DR          Bugfix        Functions           SetFilename() now obsolete
+                                                                      Internally uses a date and always adds to the filename
+                                                                      Date (and filename) is updated at every call to WriteToLogfile
+1.1.2.3    19 Mar 10    DR          BugFix        Functions           Modified WriteEventLogEntry to prefix Event Source with the 
+                                                                      Company name when writing to the Event Log.
+                                                                      Used SyncLock around the Stream object in WriteToLogFile method
+1.1.3.4    12 Aug 10    DR          Change        Functions           Removed 'm' from all Private variables (ie 'm_' becomes '_')
+1.1.4.5    20 Aug 10    DR          Change        Functions           Changed logfile path so that application version number plays no part

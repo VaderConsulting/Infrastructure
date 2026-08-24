@@ -1,0 +1,352 @@
+﻿Public Class frmLogon
+
+    'Private m_Username As String = ""
+    'Private m_Password As String = ""
+    'Private m_IsAuthenticated As Boolean = False
+    ''Private m_PerformAutoLogon As Boolean = False
+    'Private m_LoginResult As System.Windows.Forms.DialogResult
+    'Private m_UserSecurityLevel As String = ""
+    'Private m_EncryptedPassword As String = ""
+    'Private m_LogonAttemptCount As Integer = 0
+    ''Private m_PerformSingleSignOn As Boolean = False
+    ''Private m_AllowWindowsLogon As Boolean = False
+    'Private m_ProvidedUsername As String = ""
+    'Private m_ProvidedPassword As String = ""
+    ''Private m_PasswordIsEncrypted As Boolean = False
+    ''Private m_Functions As New Functions()
+    'Private m_Authorised As Boolean = False
+    'Private m_EncryptedEncryptionKey As String = "" 'm_Functions.LoadConfigSetting("SystemSettings", "EncryptionKey")
+    'Private m_DecryptedEncryptionKey As String = "" 'm_Functions.SimpleCrypt(m_EncryptedEncryptionKey)
+
+
+    'Public Property InteractiveUserUsername() As String
+    '    Get
+    '        Return m_Username
+    '    End Get
+    '    Set(ByVal value As String)
+    '        m_Username = value
+    '    End Set
+    'End Property
+
+    ''Public Property InteractiveUserPassword()
+    ''    Get
+    ''        Return m_InteractiveUserPassword
+    ''    End Get
+    ''    Set(ByVal value)
+    ''        m_InteractiveUserPassword =REDACTED
+    ''    End Set
+    ''End Property
+
+    'Public Property InteractiveUserIsAuthenticated() As Boolean
+    '    Get
+    '        Return m_IsAuthenticated
+    '    End Get
+    '    Set(ByVal value As Boolean)
+    '        m_IsAuthenticated = value
+    '    End Set
+    'End Property
+
+    'Private Sub OK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK.Click
+    '    Dim StoredPassword As String = m_Functions.LoadConfigSettingAttribute("SystemSecurityLevels", m_InteractiveUserUsername, "Password")
+
+    '    'EncryptedPassword =REDACTED gDecryptedEncryptionKey)
+    '    m_EncryptedPassword =REDACTED m_DecryptedEncryptionKey)
+
+    '    If StoredPassword = "" Then
+    '        ' Incorrect Username
+    '        m_LogonAttemptCount += 1
+    '        Me.lblIncorrect.Visible = True
+    '        txtUsername.SelectAll()
+    '        txtPassword.Text = ""
+    '        txtUsername.Focus()
+    '    Else
+    '    End If
+
+    'End Sub
+
+    'Public Sub New()
+
+    '    ' This call is required by the Windows Form Designer.
+    '    InitializeComponent()
+
+    '    ' Add any initialization after the InitializeComponent() call.
+    '    performCADSLogon()
+    'End Sub
+
+    'Public Sub New(ByVal Username As String, ByVal Password As String, ByVal PasswordIsEncrypted As Boolean)
+    '    ' This call is required by the Windows Form Designer.
+    '    InitializeComponent()
+
+    '    m_ProvidedUsername = Username
+    '    m_ProvidedPassword =REDACTED
+
+    '    If m_ProvidedUsername.Length = "" And m_ProvidedPassword.Length = "" Then
+    '        If Not IsWindowsAccountAuthorised() Then performCADSLogon()
+    '    Else
+    '        performCADSLogon()
+    '    End If
+    'End Sub
+
+    'Private Function IsWindowsAccountAuthorised() As Boolean
+    '    ' This is used to perform AutoLogon (or Single Sign-on)
+    '    Dim ShortWindowsUsername As String = My.User.Name.ToLower
+    '    Dim ConfiguredCADSAccountName As String = ""
+    '    Dim ConfiguredWindowsDomainName As String = ""
+
+    '    Try
+    '        If ShortWindowsUsername.Contains("\") Then
+    '            ShortWindowsUsername = ShortWindowsUsername.Substring(ShortWindowsUsername.IndexOf("\") + 1, ShortWindowsUsername.Length - ShortWindowsUsername.IndexOf("\") - 1)
+    '        End If
+
+    '        ConfiguredCADSAccountName = m_Functions.LoadConfigSetting("UsernameMapping", ShortWindowsUsername)
+    '        ConfiguredWindowsDomainName = m_Functions.LoadConfigSettingAttribute("UsernameMapping", ShortWindowsUsername, "Domain")
+
+    '        If ConfiguredWindowsDomainName <> "" Then
+    '            ' Check the Domain name is correct
+    '            If Not My.User.Name.ToLower = ConfiguredWindowsDomainName & "\" & ShortWindowsUsername.ToLower Then
+    '                ConfiguredCADSAccountName = ""
+    '                Return False
+    '            Else
+
+    '            End If
+    '        Else
+    '            ' No domain specified.  Allow this to go-through
+    '            Return True
+    '        End If
+    '    Catch
+    '        ' We get here if the specified account was not found - i.e. They are not allowed to Single-Sign-on
+    '        Return False
+    '    End Try
+
+    'End Function
+
+    'Private Sub performCADSLogon()
+
+    '    m_EncryptedEncryptionKey = m_Functions.LoadConfigSetting("SystemSettings", "EncryptionKey")
+    '    m_DecryptedEncryptionKey = m_Functions.SimpleCrypt(m_EncryptedEncryptionKey)
+
+    '    Me.ShowDialog()
+
+    'End Sub
+
+    'Private Sub Cancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel.Click
+    '    InteractiveUserIsAuthenticated = False
+    '    DialogResult = Windows.Forms.DialogResult.Cancel
+    'End Sub
+
+    'Private Sub frmLogon_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+    '    If e.CloseReason = Windows.Forms.CloseReason.UserClosing Then DialogResult = Windows.Forms.DialogResult.Cancel
+    'End Sub
+
+    'Private Sub frmLogon_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
+    '    Me.Text = My.Application.Info.Title & " - Logon"
+    '    Me.Show()
+
+    '    Me.txtUsername.Focus()
+
+    '    PopulateScopes()
+    'End Sub
+
+    'Private Sub txtUsername_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtUsername.TextChanged
+    '    Me.lblIncorrect.Visible = False
+    '    If txtUsername.Text.Trim.Length > 0 Then
+    '        OK.Enabled = True
+    '    Else
+    '        OK.Enabled = False
+    '    End If
+    'End Sub
+
+    'Private Sub txtUsername_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtUsername.Enter
+    '    txtUsername.SelectAll()
+    'End Sub
+
+    'Private Sub txtPassword_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPassword.Enter
+    '    txtPassword.SelectAll()
+    'End Sub
+
+    'Private Sub PopulateScopes()
+    '    cmbScope.Items.Clear()
+    '    cmbScope.Items.Add("CADS")
+    '    cmbScope.SelectedItem = cmbScope.Items(0)
+    'End Sub
+
+    ''Private Function x() As String
+    ''    'Dim m_ProvidedUsername As String = Me.txtUsername.Text
+    ''    'Dim m_ProvidedPassword As String = Me.txtPassword.Text
+    ''    'Dim m_PasswordIsEncrypted As Boolean = False
+    ''    Dim PerformSingleSignOn As Boolean = False
+
+    ''    ' If we could not find cads.config during startup, then we cannot continue...
+    ''    'If m_CADSConfigFileNotFound = True Then Return UserSecurityLevel
+
+
+
+    ''    Dim LogonResult As String = ""
+
+    ''    If CADSAccountName <> "" Then
+    ''        m_ProvidedUsername = CADSAccountName
+    ''        m_ProvidedPassword =REDACTED & "This is not a Password" & Chr(9) ' Not replicable due to the chr(9)'s
+    ''        PerformSingleSignOn = True
+    ''    Else
+    ''        PerformSingleSignOn = False
+    ''    End If
+
+    ''    ' =======================================================================================
+    ''    ' SINGLE SIGN-ON
+    ''    If m_ProvidedUsername.Length = 0 Then
+    ''        Dim ShortWindowsUsername As String = My.User.Name.ToLower
+    ''        Dim CADSAccountName As String = ""
+    ''        Dim DomainName As String = ""
+    ''        Try
+    ''            If ShortWindowsUsername.Contains("\") Then
+    ''                ShortWindowsUsername = ShortWindowsUsername.Substring(ShortWindowsUsername.IndexOf("\") + 1, ShortWindowsUsername.Length - ShortWindowsUsername.IndexOf("\") - 1)
+    ''            End If
+    ''            CADSAccountName = m_Functions.LoadConfigSetting("UsernameMapping", ShortWindowsUsername)
+    ''            DomainName = m_Functions.LoadConfigSettingAttribute("UsernameMapping", ShortWindowsUsername, "Domain")
+    ''            If DomainName <> "" Then
+    ''                If Not My.User.Name.ToLower = DomainName & "\" & ShortWindowsUsername.ToLower Then
+    ''                    CADSAccountName = ""
+    ''                End If
+    ''            Else
+    ''                ' No domain specified.  Allow this to go-through
+    ''            End If
+    ''        Catch
+
+    ''        End Try
+
+    ''        Dim LogonResult As String = ""
+
+    ''        If CADSAccountName <> "" Then
+    ''            m_ProvidedUsername = CADSAccountName
+    ''            m_ProvidedPassword =REDACTED & "This is not a Password" & Chr(9) ' Not replicable due to the chr(9)'s
+    ''            PerformSingleSignOn = True
+    ''        Else
+    ''            PerformSingleSignOn = False
+    ''        End If
+    ''    End If
+    ''    ' =======================================================================================
+
+    ''    Do
+    ''        If m_ProvidedUsername.Length = 0 Then
+    ''            m_AllowWindowsLogon = False
+
+    ''            m_LoginResult = LoginForm.ShowDialog
+
+    ''            If LoginResult = Windows.Forms.DialogResult.Cancel Then
+    ''                Return ""
+    ''            End If
+
+    ''            'ProvidedUsername = LoginForm.InteractiveUserUsername.Trim.ToLower
+    ''            'ProvidedPassword =REDACTED
+
+    ''            InteractiveUserUsername = m_InteractiveUserUsername.Trim.ToLower
+    ''            InteractiveUserPassword =REDACTED
+
+    ''            'InteractiveUserUsername = ProvidedUsername
+    ''            'InteractiveUserPassword =REDACTED
+    ''        Else
+    ''            InteractiveUserUsername = m_ProvidedUsername.ToLower
+    ''            InteractiveUserPassword =REDACTED
+    ''        End If
+
+    ''        Try
+    ''            If InteractiveUserPassword <> Chr(9) & "This is not a Password" & Chr(9) Then ' This is the backdoor check
+    ''                If Not m_PasswordIsEncrypted Then
+    ''                    'EncryptedPassword =REDACTED gDecryptedEncryptionKey)
+    ''                    m_EncryptedPassword =REDACTED gDecryptedEncryptionKey)
+    ''                Else
+    ''                    m_EncryptedPassword =REDACTED
+    ''                End If
+
+    ''                Dim StoredPassword As String = LoadConfigSettingAttribute("SystemSecurityLevels", InteractiveUserUsername, "Password")
+
+    ''                If StoredPassword = "" Then
+    ''                    ' Incorrect Username
+    ''                    'Return UserSecurityLevel
+    ''                    'FileLoggingObject.WriteWarningEvent("Incorrect username")
+    ''                    'ProvidedUsername = ""
+    ''                    'ProvidedPassword = ""
+    ''                    InteractiveUserUsername = "" 'ProvidedUsername
+    ''                    InteractiveUserPassword = "" 'ProvidedPassword
+    ''                    Me.lblIncorrect.Visible = True
+    ''                Else
+    ''                    If m_EncryptedPassword =REDACTED Then
+    ''                        m_UserSecurityLevel = GetUserAccessLevel(InteractiveUserUsername)
+
+    ''                        If Not DoNotDownloadUserConfiguration Then
+    ''                            UpdateUserConfigFile()
+    ''                        End If
+    ''                    Else
+    ''                        ' Incorrect password
+    ''                        'FileLoggingObject.WriteWarningEvent("Incorrect password")
+    ''                        'LogonUsername = ""
+    ''                        'LogonPassword = ""
+    ''                        InteractiveUserUsername = ""
+    ''                        InteractiveUserPassword = ""
+    ''                        Me.lblIncorrect.Visible = True
+    ''                        'LogonAttemptCount += 1
+    ''                    End If
+    ''                End If
+    ''            Else ' AutoLogon
+    ''                InteractiveUserUsername = m_ProvidedUsername
+    ''                m_UserSecurityLevel = GetUserAccessLevel(ProvidedUsername)
+    ''                If Not DoNotDownloadUserConfiguration Then
+    ''                    UpdateUserConfigFile()
+    ''                End If
+    ''            End If
+    ''        Catch ex As Exception
+    ''            'FileLoggingObject.WriteErrorEvent("An unexpected error has occured.  This is a critical error.  " & My.Application.Info.AssemblyName & " cannot continue.")
+    ''            'FileLoggingObject.WriteErrorEvent("Error in DoLogon()")
+    ''            'FileLoggingObject.WriteErrorEvent("The line(s) between the asterisks contain the Exception message.")
+    ''            'FileLoggingObject.WriteErrorEvent("************************************************************************")
+    ''            'FileLoggingObject.WriteErrorEvent(ex2.Message)
+    ''            'FileLoggingObject.WriteErrorEvent("************************************************************************")
+    ''            Return ""
+    ''        End Try
+    ''        m_LogonAttemptCount += 1
+    ''    Loop Until (m_UserSecurityLevel <> "") Or (m_LogonAttemptCount = 3)
+
+    ''    Me.Close()
+
+    ''    If m_UserSecurityLevel <> "" Then ' Logon is ok
+    ''        ' Backdoor...
+    ''        If m_ProvidedUsername = "REDACTED" Then
+    ''            InteractiveUserUsername = "REDACTED"
+    ''        End If
+
+    ''        ConfigSettings = MySettings(InteractiveUserUsername)
+
+    ''        InteractiveUserIsAuthenticated = True
+
+    ''        TargetDirectoryConnectionUsername = CollectionValue("DirectoryUserUsername", ConfigSettings)
+    ''        TargetDirectoryConnectionPassword =REDACTED"DirectoryUserPassword", ConfigSettings), gDecryptedEncryptionKey)
+
+    ''        'FileLoggingObject.WriteEvent("Determining Current Server Name", LOGGING_LEVEL.DEBUGGING)
+    ''        CurrentDirectoryServer = DetermineTargetServerName(DirectoryServers)
+    ''        'FileLoggingObject.WriteEvent("Returned from determining Current Server Name", LOGGING_LEVEL.DEBUGGING)
+
+    ''        If CurrentDirectoryServer <> "" Then
+    ''            TargetDirectoryUserRootDN = "LDAP://" & CurrentDirectoryServer & CollectionValue("DirectoryUserRoot", ConfigSettings)
+    ''            TargetDirectoryPhoneRootDN = "LDAP://" & CurrentDirectoryServer & CollectionValue("DirectoryPhoneRoot", ConfigSettings)
+    ''            TargetDirectoryConfigurationRootDN = "LDAP://" & CurrentDirectoryServer & CollectionValue("ConfigurationRoot", ConfigSettings)
+    ''        Else
+    ''            'MsgBox("No Directory Server could be contacted.  This is a critical error. " & My.Application.Info.AssemblyName & " cannot continue.", MsgBoxStyle.Exclamation + MsgBoxStyle.OkOnly, "Critical error")
+    ''            'FileLoggingObject.WriteEvent("No Directory Server could be contacted.  This is a critical error.  " & My.Application.Info.AssemblyName & " cannot continue.", LOGGING_LEVEL.DEBUGGING)
+    ''        End If
+
+    ''        'FileLoggingObject.WriteEvent("*****************************", LOGGING_LEVEL.DEBUGGING)
+    ''        'FileLoggingObject.WriteEvent("DEBUGGING INFORMATION FOLLOWS", LOGGING_LEVEL.DEBUGGING)
+    ''        'FileLoggingObject.WriteEvent("*****************************", LOGGING_LEVEL.DEBUGGING)
+    ''        'FileLoggingObject.WriteEvent("Directory Username      : "REDACTED"'        'FileLoggingObject.WriteEvent("Directory Password      : "REDACTED"'        'FileLoggingObject.WriteEvent("Directory Path (User)   : " & TargetDirectoryUserRootDN, LOGGING_LEVEL.DEBUGGING)
+    ''        'FileLoggingObject.WriteEvent("Directory Path (Phone)  : " & TargetDirectoryPhoneRootDN, LOGGING_LEVEL.DEBUGGING)
+    ''        'FileLoggingObject.WriteEvent("Directory Path (Config) : " & TargetDirectoryConfigurationRootDN, LOGGING_LEVEL.DEBUGGING)
+    ''        'FileLoggingObject.WriteEvent("*****************************", LOGGING_LEVEL.DEBUGGING)
+
+    ''    Else
+    ''        m_UserSecurityLevel = ""
+    ''    End If
+
+    ''End Function
+
+End Class

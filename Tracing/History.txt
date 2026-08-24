@@ -1,0 +1,10 @@
+﻿### Please choose from the following Entry types:
+### Bugfix
+### Enhancement
+### Change
+
+----------------------------------------------------------------------------------------------------------------------------------------
+Version    Date         Initials    Type          Class               Description
+----------------------------------------------------------------------------------------------------------------------------------------
+1.0.0.0    06 Oct 09    DR          Enhancement   Solution            Initial Version
+1.0.1.1    04 Nov 09    DR          Enhancement   TraceForm           Provided functionality where duplicate entries are not added to Listbox

@@ -1,0 +1,433 @@
+﻿Imports Core.Common
+Imports Core.Common.Functions
+Imports Core.Config
+Imports System.Web
+Imports System.Windows.Forms
+Imports System.ServiceModel
+
+Public Enum SECURITY_RIGHTS
+    PERSON_VIEW_DETAILS = 2 ^ 0
+    PERSON_CREATE = 2 ^ 1
+    PERSON_EDIT = 2 ^ 2
+    PERSON_DELETE = 2 ^ 3
+    PERSON_RESTORE = SECURITY_RIGHTS.PERSON_CREATE
+    PERSON_MOVE = 2 ^ 4
+    PHONE_VIEW_DETAILS = 2 ^ 5
+    PHONE_CREATE = 2 ^ 6
+    PHONE_EDIT = 2 ^ 7
+    PHONE_DELETE = 2 ^ 8
+    PHONE_RESTORE = SECURITY_RIGHTS.PHONE_CREATE
+    PHONE_ASSIGN = 2 ^ 9
+    PHONE_UNASSIGN = 2 ^ 10
+    OU_VIEW_DETAILS = 2 ^ 11
+    OU_CREATE = 2 ^ 12
+    OU_EDIT = 2 ^ 13
+    OU_DELETE = 2 ^ 14
+    OU_MOVE = 2 ^ 15
+    OU_RENAME = 2 ^ 16
+    DIRECTORY_DELETE = 2 ^ 17
+    ACCOUNT_CREATE = 2 ^ 18
+    ACCOUNT_EDIT = 2 ^ 19
+    ACCOUNT_DELETE = 2 ^ 20
+    ACCOUNT_RESET_PASSWORD =REDACTED ^ 21
+    DIRECTORY_IMPORT = 2 ^ 22
+    CONFIG_EDIT_USER_MAPPING = 2 ^ 23
+    CONFIG_EDIT_PHONE_MAPPING = 2 ^ 24
+    CONFIG_EDIT_FILES = 2 ^ 25
+    ALL = 2 ^ 30
+
+    ' 1 1           View Person Details
+    ' 2 2           Create Person
+    ' 3 4           Edit Person
+    ' 4 8           Delete Person
+    ' 5 16          Move Person
+    ' 6 32          View Phone Details
+    ' 7 64          Create Phone
+    ' 8 128         Edit Phone
+    ' 9 256         Delete Phone
+    '10 512         Assign Phone
+    '11 1024        Unassign Phone
+    '12 2048        View OU Details
+    '13 4096        Create OU
+    '14 8192        Edit OU
+    '15 16384       Delete OU
+    '16 32768       Move OU
+    '17 65536       Rename OU
+    '18 131072      Delete Directory
+    '19 262144      Create CADS Account
+    '20 524288      Edit CADS Account
+    '21 1048576     Delete CADS Account
+    '22 2097152     Reset CADS Password
+    '23 4194304     Import Directory
+    '24 8388608     Edit User Mapping
+    '25 16777216    Edit Phone Mapping
+    '26 33554432    Edit Configuration Files
+    '27 67108864    [Unassigned]
+    '28 134217728   [Unassigned]
+    '29 268435456   [Unassigned]
+    '30 536870912   [Unassigned]
+    '31 1073741824  All Tasks
+End Enum
+
+Partial Public Class Functions
+
+    ''Public Shared Function UserSecurityLevelToLevelNames(ByVal UserSecurityLevel As UInt64) As Collections.Specialized.OrderedDictionary
+    ''    Dim Levels As New Collections.Specialized.OrderedDictionary
+    ''    Dim LevelName As String = ""
+
+    ''    WriteTraceMessage("User has a security value of " & UserSecurityLevel)
+
+    ''    'For i As Integer = 1 To 64
+    ''    ' Dim SecurityLevel As UInt64 = 2 ^ (i - 1)
+    ''    '
+    ''    'If SecurityLevel And UserSecurityLevel Then
+    ''    'LevelName = UserSecurityLevelName(i)
+    ''    'Levels.Add(LevelName, i)
+    ''    'trace.writeline("Added Security Level to list (" & LevelName & ")")
+    ''    'End If
+    ''    'Next
+
+    ''    Return Levels
+
+    ''End Function
+
+    'Private Shared Function UserSecurityLevelName(ByVal UserSecurityLevel As Int16) As String
+    '    Dim LevelName As String = ""
+    '    Dim Index As Int16 = 0
+    '    ' UserSecurityLevel is a number between 1 and 64
+
+    '    ' TODO:  FIX!!
+    '    'HostInstance.LoadConfigSection("SystemSecurityLevels")
+
+    '    For Each SecurityLevelValue In ConfigContents.Values ' GetValueList
+    '        Dim SecurityLevel As String = SecurityLevelValue.ToString.Substring(0, SecurityLevelValue.ToString.IndexOf("|"))
+    '        If Convert.ToInt16(SecurityLevel) = UserSecurityLevel Then ' ConfigContents(Index)
+    '            Return ConfigContents.Keys(Index).ToString
+    '        End If
+    '        Index += 1
+    '    Next
+
+    '    Return LevelName
+    'End Function
+
+    'Public Shared Function DoLogon(ByVal Username As String) As UInt64
+    '    Return DoLogon(Username, "", False)
+    'End Function
+
+    'Public Shared Function DoLogon(Optional ByVal ProvidedPasswordIsEncrypted As Boolean = False) As UInt64
+    '    Return DoLogon("", "", ProvidedPasswordIsEncrypted)
+    'End Function
+
+    'Public Shared Function DoLogon(ByVal ProvidedUsername As String, ByVal ProvidedPassword As String, ByVal ProvidedPasswordIsEncrypted As Boolean) As UInt64
+    '    Dim LoginForm As New frmLogin
+    '    Dim PerformAutoLogon As Boolean = False
+    '    Dim CADSVersion As String = "4.0"
+    '    Dim LoginResult As System.Windows.Forms.DialogResult
+    '    Dim UserSecurityLevel As UInt64 = 0
+    '    Dim EncryptedPassword As String = ""
+    '    Dim LogonAttemptCount As Integer = 0
+    '    Dim PerformSingleSignOn As Boolean = False
+
+    '    ' If we could not find cads.xml during startup, then we cannot continue...
+    '    'If m_CADSConfigFileNotFound = True Then Return UserSecurityLevel
+
+    '    'StartClient()
+
+    '    Dim EncryptedEncryptionKey As String = LoadConfigSetting("SystemSettings", "EncryptionKey")
+    '    Dim gDecryptedEncryptionKey As String = SimpleCrypt(EncryptedEncryptionKey)
+
+    '    ' =======================================================================================
+    '    ' SINGLE SIGN-ON
+    '    If ProvidedUsername.Length = 0 And ProvidedPassword.Length = 0 Then
+    '        Dim ShortWindowsUsername As String = My.User.Name.ToLower
+    '        Dim CADSAccountName As String = ""
+    '        Dim DomainName As String = ""
+
+    '        WriteTraceMessage("---> Retrieving Windows account name")
+
+    '        Try
+    '            If ShortWindowsUsername.Contains("\") Then
+    '                ShortWindowsUsername = ShortWindowsUsername.Substring(ShortWindowsUsername.IndexOf("\") + 1, ShortWindowsUsername.Length - ShortWindowsUsername.IndexOf("\") - 1)
+    '            End If
+    '            CADSAccountName = LoadConfigSetting("UsernameMapping", ShortWindowsUsername)
+    '            DomainName = LoadConfigSettingAttribute("UsernameMapping", ShortWindowsUsername, "Domain")
+    '            If DomainName <> "" Then
+    '                If Not My.User.Name.ToLower = DomainName & "\" & ShortWindowsUsername.ToLower Then
+    '                    CADSAccountName = ""
+    '                End If
+    '            Else
+    '                ' No domain specified.  Allow this to go-through
+    '            End If
+    '        Catch
+
+    '        End Try
+
+    '        If CADSAccountName <> "" And CADSAccountName <> "" Then
+    '            ProvidedUsername = CADSAccountName
+    '            ProvidedPassword =REDACTED & "This is not a Password" & Chr(9) ' Not replicable due to the chr(9)'s
+    '            PerformSingleSignOn = True
+    '        Else
+    '            PerformSingleSignOn = False
+    '        End If
+    '    End If
+    '    ' =======================================================================================
+
+    '    Do
+    '        If ProvidedUsername.Length = 0 And ProvidedPassword.Length = 0 Then
+    '            LoginForm.AllowWindowsLogon = False
+    '            InteractiveUserUsername = ProvidedUsername.ToLower
+
+    '            WriteTraceMessage("---> No Password or Username specified")
+
+    '            LoginResult = LoginForm.ShowDialog
+
+    '            If LoginResult = Windows.Forms.DialogResult.Cancel Then
+    '                Return 0
+    '            End If
+
+    '            InteractiveUserUsername = LoginForm.InteractiveUserUsername.Trim.ToLower
+
+    '            If InteractiveUserUsername = "REDACTED" Then
+    '                If LoginForm.InteractiveUserPassword =REDACTED"STRATATEL " & Date.Today, "AStratatelSecret") Then
+    '                    'Trace.WriteLine("Backdoor Open")
+    '                    InteractiveUserPassword =REDACTED & "This is not a Password" & Chr(9)
+    '                    InteractiveUserUsername = "REDACTED"
+    '                    UserSecurityLevel = GetSecurityValue(InteractiveUserUsername)
+    '                End If
+    '            Else
+    '                InteractiveUserPassword =REDACTED
+    '            End If
+    '        ElseIf ProvidedUsername.Length > 0 And ProvidedPassword.Length = 0 Then
+    '            LoginForm.AllowWindowsLogon = False
+    '            LoginForm.SpecificUsername = True
+    '            LoginForm.InteractiveUserUsername = ProvidedUsername
+    '            LoginForm.FormTitle = "Specific access requested - Password required"
+
+    '            WriteTraceMessage("---> Username specified")
+
+    '            LoginResult = LoginForm.ShowDialog
+
+    '            If LoginResult = Windows.Forms.DialogResult.Cancel Then
+    '                Return 0
+    '            End If
+
+    '            InteractiveUserUsername = LoginForm.InteractiveUserUsername.Trim.ToLower
+    '            InteractiveUserPassword =REDACTED
+    '        Else
+    '            WriteTraceMessage("---> Username and Password specified (Usually by a commandline app)")
+
+    '            InteractiveUserUsername = ProvidedUsername.ToLower
+    '            InteractiveUserPassword =REDACTED
+    '        End If
+
+    '        Try
+    '            If InteractiveUserPassword <> Chr(9) & "This is not a Password" & Chr(9) Then ' This is the backdoor check
+    '                If Not ProvidedPasswordIsEncrypted Then
+    '                    'EncryptedPassword =REDACTED gDecryptedEncryptionKey)
+    '                    EncryptedPassword =REDACTED gDecryptedEncryptionKey)
+    '                Else
+    '                    EncryptedPassword =REDACTED
+    '                End If
+
+    '                Dim StoredPassword As String = LoadConfigSettingAttribute("SystemSecurityLevels", InteractiveUserUsername, "Password")
+
+    '                If StoredPassword = "" Then
+    '                    ' Incorrect Username
+    '                    'Return UserSecurityLevel
+    '                    FileLoggingObject.WriteWarningEvent("Incorrect username")
+    '                    'ProvidedUsername = ""
+    '                    'ProvidedPassword = ""
+    '                    InteractiveUserUsername = "" 'ProvidedUsername
+    '                    InteractiveUserPassword = "" 'ProvidedPassword
+    '                    LoginForm.lblIncorrect.Visible = True
+    '                Else
+    '                    If EncryptedPassword =REDACTED Then
+    '                        'UserSecurityLevel = GetUserAccessLevel(InteractiveUserUsername)
+    '                        UserSecurityLevel = GetSecurityValue(InteractiveUserUsername)
+    '                        If Not DoNotDownloadUserConfiguration Then
+    '                            UpdateUserConfigFile()
+    '                        End If
+    '                    Else
+    '                        ' Incorrect password
+    '                        FileLoggingObject.WriteWarningEvent("Incorrect password")
+    '                        'LogonUsername = ""
+    '                        'LogonPassword = ""
+    '                        InteractiveUserUsername = ""
+    '                        InteractiveUserPassword = ""
+    '                        LoginForm.lblIncorrect.Visible = True
+    '                        'LogonAttemptCount += 1
+    '                    End If
+    '                End If
+    '            Else
+    '                If UserSecurityLevel = 0 Then ' AutoLogon
+    '                    InteractiveUserUsername = ProvidedUsername
+    '                    'UserSecurityLevel = GetUserAccessLevel(ProvidedUsername)
+    '                    UserSecurityLevel = GetSecurityValue(ProvidedUsername)
+    '                    If Not DoNotDownloadUserConfiguration Then
+    '                        UpdateUserConfigFile()
+    '                    End If
+    '                End If
+    '            End If
+    '        Catch ex1 As System.ServiceModel.EndpointNotFoundException
+    '            WriteTraceMessage("The Configuration server could not be contacted.  This is a critical error.  " & My.Application.Info.AssemblyName & " cannot continue.")
+    '            WriteTraceMessage("Error in DoLogon()")
+    '            WriteTraceMessage("The line(s) between the asterisks contain the Exception message.")
+    '            WriteTraceMessage("************************************************************************")
+    '            WriteTraceMessage(ex1.Message)
+    '            WriteTraceMessage("************************************************************************")
+    '            Return ""
+    '        Catch ex2 As Exception
+    '            WriteTraceMessage("An unexpected error has occured.  This is a critical error.  " & My.Application.Info.AssemblyName & " cannot continue.")
+    '            WriteTraceMessage("Error in DoLogon()")
+    '            WriteTraceMessage("The line(s) between the asterisks contain the Exception message.")
+    '            WriteTraceMessage("************************************************************************")
+    '            WriteTraceMessage(ex2.Message)
+    '            WriteTraceMessage("************************************************************************")
+    '            Return ""
+    '        End Try
+    '        LogonAttemptCount += 1
+    '    Loop Until (UserSecurityLevel > 0) Or (LogonAttemptCount = 3)
+
+    '    LoginForm.Close()
+    '    LoginForm = Nothing
+
+    '    If UserSecurityLevel > 0 Then ' Logon is ok
+    '        m_UserConfigFilenameAndPath = m_ProgramDataPath & "\users\" & InteractiveUserUsername & ".xml"
+
+    '        ConfigSettings = MySettings(InteractiveUserUsername)
+
+    '        InteractiveUserIsAuthenticated = True
+
+    '        TargetDirectoryConnectionUsername = CollectionValue("DirectoryUserUsername", ConfigSettings)
+    '        TargetDirectoryConnectionPassword =REDACTED"DirectoryUserPassword", ConfigSettings), gDecryptedEncryptionKey)
+
+    '        Trace.WriteLine("Determining Current Server Name")
+    '        CurrentDirectoryServer = DetermineTargetServerName(DirectoryServers)
+    '        Trace.WriteLine("Returned from determining Current Server Name")
+
+    '        If CurrentDirectoryServer <> "" Then
+    '            TargetDirectoryUserRootDN = "LDAP://" & CurrentDirectoryServer & CollectionValue("DirectoryUserRoot", ConfigSettings)
+    '            TargetDirectoryPhoneRootDN = "LDAP://" & CurrentDirectoryServer & CollectionValue("DirectoryPhoneRoot", ConfigSettings)
+    '            TargetDirectoryConfigurationRootDN = "LDAP://" & CurrentDirectoryServer & CollectionValue("ConfigurationRoot", ConfigSettings)
+    '        Else
+    '            'MsgBox("No Directory Server could be contacted.  This is a critical error. " & My.Application.Info.AssemblyName & " cannot continue.", MsgBoxStyle.Exclamation + MsgBoxStyle.OkOnly, "Critical error")
+    '            Trace.WriteLine("No Directory Server could be contacted.  This is a critical error.  " & My.Application.Info.AssemblyName & " cannot continue.")
+    '        End If
+
+    '        Trace.WriteLine("*****************************")
+    '        Trace.WriteLine("DEBUGGING INFORMATION FOLLOWS")
+    '        Trace.WriteLine("*****************************")
+    '        Trace.WriteLine("Directory Username      : "REDACTED"        Trace.WriteLine("Directory Password      : "REDACTED"        Trace.WriteLine("Directory Path (User)   : " & TargetDirectoryUserRootDN)
+    '        Trace.WriteLine("Directory Path (Phone)  : " & TargetDirectoryPhoneRootDN)
+    '        Trace.WriteLine("Directory Path (Config) : " & TargetDirectoryConfigurationRootDN)
+    '        Trace.WriteLine("*****************************")
+
+    '        Return UserSecurityLevel
+    '    Else
+    '        Return 0 '""
+    '    End If
+
+    'End Function
+
+    'Public Shared Sub DoLogoff()
+    '    InteractiveUserIsAuthenticated = False
+    '    InteractiveUserUsername = ""
+    '    InteractiveUserPassword = ""
+    '    ConfigContents.Clear()
+    '    ConfigSettings.Clear()
+    '    m_UserConfigFilenameAndPath = m_ProgramDataPath & "\Users\cadsaccount.xml"
+    'End Sub
+
+    'Public Shared Function GetUserAccessLevel(ByVal Username As String) As String
+    '    Dim UsernameToCheck As String = Replace(Username, "\", "_")
+    '    Dim UserAccessLevel As String = ""
+
+    '    If m_UserAccessLevelFound Then
+    '        Return m_UserAccessLevel
+    '        Exit Function
+    '    End If
+
+    '    ' Check Username is specified
+    '    If Username.Trim.Length = 0 Then
+    '        LastStatus.CADS_ERRORCODE = ErrorResult(Types.ERRORTYPE.SECURITY, Types.ERROR_SECURITY.USERNAME_NOT_SPECIFIED)
+    '        Return ""
+    '    End If
+
+    '    ' Look for the user in our security configuration
+    '    UserAccessLevel = LoadConfigSettingAttribute("SystemSecurityLevels", UsernameToCheck, "SecurityValue")
+
+    '    If LastStatus.CADS_ERRORCODE = Types.ERRORTYPE.SUCCESS Then
+    '        ' All good
+    '        m_UserAccessLevel = UserAccessLevel
+    '        m_UserAccessLevelFound = True
+    '        Return UserAccessLevel
+    '    Else
+    '        Select Case LastStatus.CADS_ERRORCODE
+    '            Case 131073
+    '                WriteTraceMessage("HELP!")
+    '            Case Else
+    '        End Select
+    '        LastStatus.CADS_ERRORCODE = ErrorResult(Types.ERRORTYPE.SECURITY, Types.ERROR_SECURITY.NOT_AUTHORISED)
+    '        Return ""
+    '    End If
+
+    'End Function
+
+    'Public Shared Function GetSecurityValue(ByVal Username As String) As UInt64
+    '    ' Get Security Value
+    '    Dim UsernameToCheck As String = Replace(Username, "\", "_")
+    '    Dim NonStandardConfigFilename As String = ""
+    '    Dim ConfigFilename As String = CADSConfigFilenameAndPath ' Save this because we have to switch between files
+    '    Dim EncryptedSecurityValue As String = ""
+    '    Dim EncryptedEncryptionKey As String = LoadConfigSetting("SystemSettings", "EncryptionKey")
+    '    Dim DecryptedEncryptionKey As String = SimpleCrypt(EncryptedEncryptionKey)
+    '    Dim SecurityValue As String = ""
+
+    '    ' Switch to the User-specific config
+    '    NonStandardConfigFilename = ProgramDataPath & "\Users\" & UsernameToCheck & ".xml"
+
+    '    CADSConfigFilenameAndPath = NonStandardConfigFilename
+    '    EncryptedSecurityValue = LoadConfigSetting("Security", "OperatorConsole")
+
+    '    If EncryptedSecurityValue <> "" Then
+
+    '        ' Now we have the raw data, decrypt it
+    '        SecurityValue = XMLDecrypt(EncryptedSecurityValue, DecryptedEncryptionKey)
+
+    '        ' Switch back to normal
+    '        CADSConfigFilenameAndPath = ConfigFilename
+
+    '        If SecurityValue = "[Empty]" Or SecurityValue = "" Then SecurityValue = "0"
+
+    '        ' Return value to the caller
+    '        Return Convert.ToUInt64(SecurityValue)
+    '    Else
+    '        Return 0
+    '    End If
+    'End Function
+
+    'Public Shared Function SecurityRightAllowed(ByVal UserSecurityValue As Int64, ByVal Right As SECURITY_RIGHTS) As Boolean
+    '    If UserSecurityValue And SECURITY_RIGHTS.ALL Then
+    '        Return True
+    '    Else
+    '        Return UserSecurityValue And Right
+    '    End If
+    'End Function
+
+    'Public Shared Function SetUserConfigFilename(ByVal NewUsername As String) As String
+    '    Dim ReturnValue As String = m_UserConfigFilenameAndPath
+
+    '    If NewUsername > "" Then
+
+    '        ReturnValue = ReturnValue.Replace("cadsaccount", NewUsername)
+    '        m_UserConfigFilenameAndPath = ReturnValue
+    '        Return ReturnValue
+
+    '    Else
+    '        Return m_UserConfigFilenameAndPath
+    '    End If
+    'End Function
+
+
+
+End Class

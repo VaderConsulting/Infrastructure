@@ -1,0 +1,10 @@
+﻿### Please choose from the following Entry types:
+### Bugfix
+### Enhancement
+### Change
+
+----------------------------------------------------------------------------------------------------------------------------------------
+Version    Date         Initials    Type          Class               Description
+----------------------------------------------------------------------------------------------------------------------------------------
+1.0.0.0    12 Feb 09    DR          Enhancement   Solution            Initial Version - moved from FileTransfer project
+1.0.1.1    23 Mar 10    DR          Enhancement   Zip                 Added Optional parameter to allow delete of original file(s)

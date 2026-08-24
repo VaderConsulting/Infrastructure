@@ -1,0 +1,181 @@
+﻿/*
+//
+// The following code is part of the following article: 
+// Title: Implementation of DHCP like client and server "Auto Discovery" behaviour with C# and Sockets by using UDP Broadcast packets.
+// 
+// Source-code for client side implementation
+//
+// Author: Bruno Ratnieks
+// Contact: redacted@example.com
+// Company: Sniffer Networks do Brasil Ltda. - SNF
+//
+// The following code may be used freely for any purpose.
+//
+//
+*/
+
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Net;
+using System.Net.Sockets;
+using System.ComponentModel;
+using System.Threading;
+using netService;
+
+
+namespace Bruno.Ratnieks.AutoDiscovery
+{
+    public class AutoDiscoveryClient
+    {
+
+        public bool disposing = false;
+
+        // Fixed Port for broadcast.
+        // You may change it but CLIENT and SERVER must be configured with the same port.
+        private int AutoDiscoveryPort = 18500;
+
+        // Specify timeout since UDP is a state-less protocol
+        // 5000ms - 5 seconds.
+        private int ServerSyncTimeout = 5000;
+        
+        private int AutoDiscoveryTimeout = 10000;
+
+        // Sample byte sequency that Identify a Server Address Request. You may change on the client-side also.
+        // Implementing other byte sequences for other actions are also valid. You as developer may know that ;)
+        byte[] packetBytes = new byte[] { 0x1, 0x2, 0x3 };
+
+        // Do not change:
+        // We will set this variable when Auto Discovery server reply with ACK;
+        // Do not change. This will be set if Server is found and check for TCP Connections is OK
+        public string ServerAddress = String.Empty;
+        public int ServerPort = 0;
+
+        private BackgroundWorker worker;
+
+        public AutoDiscoveryClient(ref BackgroundWorker worker)
+        {
+            this.worker = worker;
+            worker.ReportProgress(1, "AutoDiscovery::Started at " + AutoDiscoveryPort + "/UDP");
+        }
+
+        public void Start(object sender, DoWorkEventArgs e)
+        {
+            try
+            {
+                while (this.disposing == false)
+                {
+                    // Must look for server.. Repeat until configured.
+                    if (ServerAddress == String.Empty)
+                    {
+                        this.worker.ReportProgress(2, "AutoDiscovery::Looking for server..");
+
+                        // Broadcast the query
+                        sendBroadcastSearchPacket();
+                    }
+
+                    Thread.Sleep(3000);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        public void Stop()
+        {
+            this.disposing = true;
+        }
+
+        // Here is to check if the server replied by Auto Discovery is Alive.
+        private bool serverIsReachable(string host, int port)
+        {
+            try
+            {
+                TcpClient handle = TCP_Client.Connect(new IPEndPoint(IPAddress.Parse(host), port), ServerSyncTimeout);
+                if (handle.Connected == true)
+                {
+                    handle.Close();
+                    return (true);
+                }
+                else
+                {
+                    return (false);
+                }
+            }
+            catch (Exception e)
+            {
+                worker.ReportProgress(1, "AutoDiscovery::Connect Error:" + e.Message);
+                return (false);
+            }
+        }
+
+        private bool sendBroadcastSearchPacket()
+        {
+
+            bool returnVal = false;
+            UdpClient udp = new UdpClient();
+            udp.EnableBroadcast = true;
+
+            udp.Client.ReceiveTimeout = AutoDiscoveryTimeout;
+
+            IPEndPoint groupEP = new IPEndPoint(IPAddress.Parse("255.255.255.255"), AutoDiscoveryPort);
+
+
+            try
+            {
+                udp.Send(packetBytes, packetBytes.Length, groupEP);
+
+                byte[] receiveBytes = udp.Receive(ref groupEP);
+
+                string returnData = Encoding.ASCII.GetString(receiveBytes, 0, receiveBytes.Length);
+                if (returnData.Substring(0, 3) == "ACK")
+                {
+                    string[] splitRcvd = returnData.Split(' ');
+                    this.worker.ReportProgress(3, "AutoDiscovery::Response Server is " + splitRcvd[1] + ":" + splitRcvd[2]);
+
+                    // Check if the server is reachable! Try to connect it using TCP.
+                    if (serverIsReachable(splitRcvd[1], Convert.ToInt16(splitRcvd[2])))
+                    {
+                        ServerAddress = splitRcvd[1];
+                        ServerPort = Convert.ToInt16(splitRcvd[2]);
+                        returnVal = true;
+                    }
+                    else
+                    {
+                        this.worker.ReportProgress(3, "AutoDiscovery::WARNING Server found but is unreachable. Retrying..");
+                        return (false);
+                    }
+
+
+                }
+                else if (returnData.Substring(0, 3) == "NAK")
+                {
+                    this.worker.ReportProgress(3, "AutoDiscovery::INVALID REQUEST");
+                }
+                else
+                {
+                    this.worker.ReportProgress(3, "AutoDiscovery::Garbage Received?");
+                }
+
+                Console.WriteLine("Sleeping. No work to do.");
+                Thread.Sleep(3000);
+            }
+            catch (SocketException e)
+            {
+                this.worker.ReportProgress(1, "AutoDiscovery::Timeout. Retrying "+e.Message);
+
+            }
+
+            udp.Close();
+
+            return (returnVal);
+
+        }
+
+    }
+}

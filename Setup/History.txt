@@ -1,0 +1,9 @@
+﻿### Please choose from the following Entry types:
+### Bugfix
+### Enhancement
+### Change
+
+----------------------------------------------------------------------------------------------------------------------------------------
+Version    Date         Initials    Type          Class               Description
+----------------------------------------------------------------------------------------------------------------------------------------
+1.0.0.0    13 Oct 09    DR          Enhancement   Solution            Initial Version

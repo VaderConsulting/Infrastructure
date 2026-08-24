@@ -1,0 +1,55 @@
+﻿### Please choose from the following Entry types:
+### Bugfix
+### Enhancement
+### Change
+
+----------------------------------------------------------------------------------------------------------------------------------------
+Version    Date         Initials    Type          Class               Description
+----------------------------------------------------------------------------------------------------------------------------------------
+1.0.0.0    12 Oct 09    DR          Enhancement   Solution            Initial Version
+1.0.1.1    02 Feb 10    DR          Enhancement   Functions           Added ConvertGUIDToString from original Utility Project
+1.0.2.2    08 Feb 10    DR          Enhancement   Functions           Added (and renamed) ReplaceEnvironmentVariables from Utility
+1.0.2.3    12 Feb 10    DK          Enhancement   Functions           Added IsValidFileName, IsValidPath and IsValidPathAndFileName
+1.0.2.4    12 Feb 10    DR          Enhancement   Functions           Added ApplicationGUID
+1.0.3.5    15 Feb 10    DR          Enhancement   Functions           Added AssemblyGUID
+                                                                      Added Serialize
+                                                                      Added Deserialize
+1.1.0.6    16 Feb 10    DR          Enhancement   Solution            Added Singleton Class, adding logging (and allowing for additional functionality in the future)
+1.1.1.7    17 Feb 10    DR          Bugfix        Functions           Corrected issue with ReplaceTags resulting in incorrect filenames
+1.2.0.8    24 Feb 10    DR          Enhancement   Solution            Added Extensions module, providing Compiler extensions
+1.2.1.9    25 Feb 10    DR          Enhancement   Extensions          Added Left(String,Length) and Right(String,Length)
+1.2.2.10   03 Mar 10    DR          Enhamcement   Functions           Added Pause2
+1.2.3.11   08 Mar 10    DR          Enhancement   ByteBuffer          Added <Serializable> to Class
+1.2.4.12   19 Mar 10    DR          Enhancement   Extensions          Added NameMinusExtension Compiler Extension
+1.2.5.13   23 Mar 10    DR          Enhancement   Functions           Added RemoveNonPrintableCharacters
+1.2.6.14   05 May 10    DR          Enhancement   Extensions          Added SplitString(String())
+1.2.7.15   26 May 10    DR          Enhancement   Functions           Added PingIPAddress
+1.2.7.16   13 Jul 10    DR          Enhancement   Functions           Added SwapEndian
+1.2.7.17   19 Jul 10    DR          Enhancement   Functions           Added ContainsValue, CleanPath, EscapedPath
+1.2.7.18   23 Aug 10    DR          Enhancement   Functions           Changed FolderName variable name to FullFolderPath in CreateFolder
+1.2.7.19   24 Aug 10    DR          Enhancement   Extension           Added support for , to EscapedDirectoryString
+                                                                      Added support for \, to CleanDirectoryString
+1.2.7.20   27 Aug 10    DR          Enhancement   Extension           Added support for # to EscapedDirectoryString
+                                                                      Added support for \# to CleanDirectoryString
+                                                                      Added support for = to EscapedDirectoryString
+                                                                      Added support for \= to CleanDirectoryString
+                                                                      Added support for " to EscapedDirectoryString
+                                                                      Added support for \" to CleanDirectoryString
+1.2.7.21   31 Aug 10    DR          Bugfix        Singleton           Changed _ProgramDataPath to APPDATA\COMPANYNAME\PRODUCTNAME
+1.2.7.22   01 Aug 10    DR          Bugfix        Functions           #YESTERDAY# in ReplaceTags incorrectly built the month and year
+                                    Enhancement   Functions           Added support in ReplaceTags for the following:
+                                                                        #DATE-1MONTH#
+                                                                        #DATE2-1MONTH#
+                                                                        #DATE4-1MONTH#
+                                                                        #DATE+1MONTH#
+                                                                        #DATE2+1MONTH#
+                                                                        #DATE4+1MONTH#
+                                                                        #YEAR-1MONTH#
+                                                                        #YEAR2-1MONTH#
+                                                                        #YEAR4-1MONTH#
+                                                                        #YEAR+1MONTH#
+                                                                        #YEAR2+1MONTH#
+                                                                        #YEAR4+1MONTH#
+                                                                        #QUARTER2#
+                                                                        #TAXQUARTER2#
+1.2.7.23   03 Sep 10    DR          Change        Functions           Changed all m_ to _

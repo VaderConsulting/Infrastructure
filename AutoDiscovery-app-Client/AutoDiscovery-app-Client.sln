@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoDiscovery-app-Client", "AutoDiscovery-app-Client.csproj", "{FEF143B8-5C4E-46C2-A061-9E6F447CB646}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoDiscovery-app-Server", "..\AutoDiscovery-app-Server\AutoDiscovery-app-Server.csproj", "{887D5DCA-E847-48E1-95B1-C4B9677C0AB9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FEF143B8-5C4E-46C2-A061-9E6F447CB646}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEF143B8-5C4E-46C2-A061-9E6F447CB646}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEF143B8-5C4E-46C2-A061-9E6F447CB646}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEF143B8-5C4E-46C2-A061-9E6F447CB646}.Release|Any CPU.Build.0 = Release|Any CPU
+		{887D5DCA-E847-48E1-95B1-C4B9677C0AB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{887D5DCA-E847-48E1-95B1-C4B9677C0AB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{887D5DCA-E847-48E1-95B1-C4B9677C0AB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{887D5DCA-E847-48E1-95B1-C4B9677C0AB9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

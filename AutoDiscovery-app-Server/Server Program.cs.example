@@ -1,0 +1,70 @@
+﻿/*
+//
+// The following code is part of the following article: 
+// Title: Implementation of DHCP like client and server "Auto Discovery" behaviour with C# and Sockets by using UDP Broadcast packets.
+// 
+// Source-code for Server Example console app.
+//
+// Author: Bruno Ratnieks
+// Contact: redacted@example.com
+// Company: Sniffer Networks do Brasil Ltda. - SNF
+//
+// The following code may be used freely for any purpose.
+//
+//
+*/
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.ComponentModel;
+using Bruno.Ratnieks.AutoDiscovery;
+
+namespace AutoDiscovery_app_Server
+{
+
+    public class serverSide
+    {
+
+        public serverSide(string serverIP, int serverPort)
+        {
+            BackgroundWorker workerAutoDiscovery = new BackgroundWorker();
+
+            workerAutoDiscovery.WorkerReportsProgress = true;
+            workerAutoDiscovery.WorkerSupportsCancellation = true;
+
+            // Setup your broadcast Server and IP that client will receive on constructor parameters.
+            AutoDiscoveryServer svcAutoDiscovery = new AutoDiscoveryServer(ref workerAutoDiscovery, serverIP, serverPort);
+            
+            
+            workerAutoDiscovery.DoWork += new DoWorkEventHandler(svcAutoDiscovery.Start);
+            workerAutoDiscovery.ProgressChanged += new ProgressChangedEventHandler(logWorkers_ProgressChanged);
+            workerAutoDiscovery.RunWorkerAsync();
+        }
+        private void logWorkers_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            // Report thread messages to Console
+            Console.WriteLine(e.UserState.ToString());
+        }
+
+    }
+
+    class Program
+    {
+        public static void Main(string[] args)
+        {
+            // That info will be sent to client as our TCP SERVER -- Not implemented.
+            // This app is a demo intended to show how to use server Auto Discovery using UDP Broadcast.
+            // Change here the IP and port.
+            serverSide ss = new serverSide("10.1.1.1", 1024);
+            while (true)
+            {
+                // keep running
+                Thread.Sleep(10000);
+            }
+        }
+    }
+}
+

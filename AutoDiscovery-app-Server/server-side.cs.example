@@ -1,0 +1,125 @@
+﻿/*
+//
+// The following code is part of the following article:
+// Title: Implementation of DHCP like client and server "Auto Discovery" behaviour with C# and Sockets by using UDP Broadcast packets.
+//
+// Source-code for server side implementation
+//
+// Author: Bruno Ratnieks
+// Contact: redacted@example.com
+// Company: Sniffer Networks do Brasil Ltda. - SNF
+//
+// The following code may be used freely for any purpose.
+//
+//
+*/
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Net;
+using System.Net.Sockets;
+using System.Net.NetworkInformation;
+using System.ComponentModel;
+
+
+namespace Bruno.Ratnieks.AutoDiscovery
+{
+    public class AutoDiscoveryServer
+    {
+
+        private System.ComponentModel.BackgroundWorker workerUDP;
+
+        // Port the UDP server will listen to broadcast packets from UDP Clients.
+        private int AutoDiscoveryPort = 18500;
+
+        // Sample byte sequency that Identify a Server Address Request. You may change on the client-side also.
+        // Implementing other byte sequences for other actions are also valid. You as developer may know that ;)
+        byte[] packetBytes = new byte[] { 0x1, 0x2, 0x3 };
+
+        // In the following example code we reply to incoming client an IP Address that
+        // Client must use as server for any purpose. (TCP Server not implemented)
+        public IPAddress addrDaemonListenIP;
+        
+        // Which port we will broadcast as TCP Server (not implemented).
+        public int BroadCastDaemonPort = 0;
+
+        private bool disposing = false;
+
+        public AutoDiscoveryServer(ref BackgroundWorker workerUDP, string serverIP, int serverPort)
+        {
+            this.workerUDP = workerUDP;
+            this.BroadCastDaemonPort = serverPort;
+            this.addrDaemonListenIP = IPAddress.Parse(serverIP);
+        }
+
+        public void Stop()
+        {
+            workerUDP.CancelAsync();
+            workerUDP.Dispose();
+            this.disposing = true;
+        }
+
+        /// <summary>
+        /// Start the listener.
+        /// </summary>
+        public void Start(object sender, DoWorkEventArgs e)
+        {
+            try
+            {
+                this.workerUDP.ReportProgress(30, "AutoDiscovery::Service Listening " + this.AutoDiscoveryPort + "/UDP");
+                byte[] ReceivedData = new byte[1024];
+
+
+                // Local End-Point
+                IPEndPoint LocalEP = new IPEndPoint(IPAddress.Any, AutoDiscoveryPort);
+                IPEndPoint RemoteEP = new IPEndPoint(IPAddress.Any, 0);
+
+                UdpClient newsock = new UdpClient(LocalEP);
+
+                ReceivedData = newsock.Receive(ref RemoteEP);
+
+                IPEndPoint IncomingIP = (IPEndPoint)RemoteEP;
+
+                while (!disposing)
+                {
+                    if (ReceivedData.SequenceEqual(packetBytes))
+                    {
+                        // Use ReportProgress from BackgroundWorker as communication channel between main app and the worker thread.
+                        this.workerUDP.ReportProgress(1, "Discovery from " + IncomingIP + "/UDP");
+
+                        // Here we reply the Service IP and Port (TCP).. 
+                        // You must point to your server and service port. For example a webserver: sending the correct IP and port 80.
+
+                        byte[] packetBytesAck = Encoding.ASCII.GetBytes("ACK " + addrDaemonListenIP + " " + BroadCastDaemonPort); // Acknowledged
+
+                        newsock.Send(packetBytesAck, packetBytesAck.Length, RemoteEP);
+
+                        this.workerUDP.ReportProgress(1, "Answering(ACK) " + packetBytes.Length + " bytes to " + IncomingIP);
+                    }
+                    else
+                    {
+                        // Unknown packet type.
+                        this.workerUDP.ReportProgress(1, "Answering(NAK) " + packetBytes.Length + " bytes to " + IncomingIP);
+                        byte[] packetBytesNak = Encoding.ASCII.GetBytes("NAK"); // Not Acknowledged
+
+                        newsock.Send(packetBytesNak, packetBytesNak.Length, RemoteEP);
+                    }
+                    ReceivedData = newsock.Receive(ref RemoteEP);
+                }
+
+                
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+        }
+    }
+}
+
+

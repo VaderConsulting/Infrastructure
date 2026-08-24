@@ -1,0 +1,13 @@
+﻿### Please choose from the following Entry types:
+### Bugfix
+### Enhancement
+### Change
+
+----------------------------------------------------------------------------------------------------------------------------------------
+Version    Date         Initials    Type          Class               Description
+----------------------------------------------------------------------------------------------------------------------------------------
+1.0.0.0    07 Oct 09    DR          Enhancement   Solution            Initial Version
+1.0.1.1    17 Dec 09    DK          Enhancement   Solution            CompressFiles Added Edit to Decompressfiles removed *.*
+1.0.2.2    02 Feb 09    DR          Enhancement   Solution            Fixed previous edit
+1.1.0.3    12 Feb 09    DR          Change        Solution            Removed Compression class and placed it into its own project
+1.1.0.4    22 Mar 10    DR          BugFix        FTP                 Updated RemoteHost to replace \ with /

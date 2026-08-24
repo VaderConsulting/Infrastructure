@@ -1,0 +1,89 @@
+﻿Imports System.DirectoryServices
+Imports Core.Directory
+Imports Core.Common
+
+<Obsolete("This class has not been completed.  You should not be using it yet")> _
+Public Class User
+
+    Private _DirectoryRoot As String = ""
+    'Private Shared _DirectoryUsername As String = ""
+    'Private Shared _DirectoryPassword As String = ""
+    Private _PropertyCollection As New Collections.Generic.List(Of CustomAttribute)
+    Private _UserPath As String = ""
+
+    Public Property PropertyCollection() As Collections.Generic.List(Of CustomAttribute)
+        Get
+            Return _PropertyCollection
+        End Get
+        Set(ByVal value As Collections.Generic.List(Of CustomAttribute))
+            _PropertyCollection = value
+        End Set
+    End Property
+
+    Public Property DirectoryRoot() As String
+        Get
+            Return _DirectoryRoot
+        End Get
+        Set(ByVal value As String)
+            _DirectoryRoot = value
+        End Set
+    End Property
+
+    'Public Shared Property DirectoryUsername() As String
+    '    Get
+    '        Return _DirectoryUsername
+    '    End Get
+    '    Set(ByVal value As String)
+    '        _DirectoryUsername = value
+    '    End Set
+    'End Property
+
+    'Public Shared Property DirectoryPassword() As String
+    '    Get
+    '        Return _DirectoryPassword
+    '    End Get
+    '    Set(ByVal value As String)
+    '        _DirectoryPassword =REDACTED
+    '    End Set
+    'End Property
+
+    Public Sub BuildAttributeList(ByVal DirectoryRoot As String)
+        _DirectoryRoot = DirectoryRoot
+        BuildAttributeList()
+    End Sub
+
+    Public Sub BuildAttributeList()
+        If _DirectoryRoot.Length = 0 Then Exit Sub
+
+        Dim ds As New DirectorySearcher
+
+        ds.Filter = "(objectclass=user)"
+        ds.SearchScope = SearchScope.Subtree
+
+        'Perform search to find just a single user
+        Dim rc As SearchResult = ds.FindOne()
+        Dim OneUser As DirectoryEntry = rc.GetDirectoryEntry
+
+        _PropertyCollection.Clear()
+
+        'For Each p As PropertyValueCollection In OneUser.Properties
+        '    Dim AnAttribute As New CustomAttribute(p.PropertyName)
+
+        '    If OneUser.Properties.Contains(p.PropertyName) Then
+        '        AnAttribute.Value = OneUser.Properties(p.PropertyName).Value
+        '        Console.WriteLine("Value for " & p.PropertyName)
+        '    Else
+        '        Console.WriteLine("No value for " & p.PropertyName)
+        '    End If
+
+        '    _PropertyCollection.Add(AnAttribute)
+        'Next
+
+        rc = Nothing
+        OneUser.Close()
+        OneUser.Dispose()
+        ds.Dispose()
+
+    End Sub
+
+End Class

@@ -1,0 +1,75 @@
+﻿Imports Core
+Imports Core.Common
+Imports Core.Common.Functions
+Imports Core.FileTransfer
+Imports Core.FileTransfer.FTP
+Imports Core.Compression.Zip
+
+Public Class Form1
+
+    Public Sub StartHere()
+        'Dim Compressed As Boolean = Compression.Zip.CompressFile("c:\temp\updateself.exe", "c:\temp\zipped.zip", False, True)
+
+        'Dim Result As Boolean = SendFile("C:\temp\output.csv", "Test Client")
+        'Dim x As New Collection
+        'Dim anobject As New Collection
+
+        'anobject.Add("Blurgh")
+
+        'x.Add(anobject)
+        'x.Add("Barney")
+
+        'Dim y As Collection = x.DeepCopy
+
+        'y.Add("Wilma")
+
+        'Debug.Print(Licensing.Functions.CheckACURegistrationCodeDate("GF3S3AjoAQHxu5wR/vUHiv04f0n2+pWuGV/+Cs3VUSP3jeDBHeplemSu8r//mell").ToString)
+
+
+        'Debug.Print(Licensing.Functions.GetACURegistrationCode("ANU", "01/01/2010", "01/01/2011"))
+
+    End Sub
+
+    Private Function SendFile(ByVal SourceFilename As String, ByVal DestinationFolder As String) As Boolean
+        Dim Result As Boolean = True
+        Dim ZipFilename As String = SourceFilename.Substring(0, SourceFilename.LastIndexOf(".")) & ".zip"
+
+        ' TODO:  Use multiple threads so this occurs in the background
+        Using oFTP As New Core.FileTransfer.FTP
+            oFTP.UseCompression = False
+            oFTP.DebugMode = True
+            oFTP.RemoteHost = "Firefly"
+            oFTP.RemoteUsername = "REDACTED"
+            oFTP.RemotePassword = "REDACTED"
+            oFTP.RemotePath = DestinationFolder
+            oFTP.RemotePort = 21
+
+            Try
+                oFTP.Login()
+                oFTP.SetMode(TransferMode.Binary)
+                oFTP.Upload(SourceFilename, ZipFilename, ResumeMode.On)
+
+                oFTP.Close()
+                Result = True
+            Catch ex As Exception
+                Result = False
+            End Try
+        End Using
+        Return Result
+    End Function
+
+    Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Dim IPAddress As String = "192.168.1.2"
+        Dim Port As Int32 = 80
+        Dim Protocol As Net.Sockets.ProtocolType = Net.Sockets.ProtocolType.Tcp
+
+        Core.Network.Functions.StartServer(IPAddress, Port, Protocol)
+
+        Core.Network.Functions.Connect(IPAddress, Port)
+
+        Console.WriteLine("Connected: " & Core.Network.Functions.Connected.ToString)
+
+    End Sub
+
+End Class
+
