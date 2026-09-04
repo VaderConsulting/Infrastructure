@@ -52,6 +52,10 @@ VS 2008 Stratatel Core.Network / Directory / FileTransfer / SQL / Security / Lic
 
 Open `Infrastructure.sln` in Visual Studio.
 
+## Requirements
+
+- Visual Studio 2008 to 2010, .NET Framework 3.5, .NET Framework 4.5, .NET Framework 4.5.2
+
 ## Attribution and provenance
 
 - **Assembly company:** Alexander Reinert, Marcello Cauchi Savona, Microsoft, Stratatel Ltd, stratatel
