@@ -58,6 +58,7 @@ Open `Infrastructure.sln` in Visual Studio.
 
 ## Attribution and provenance
 
+Working copy from my Historical Dev folder `Infrastructure`.
 - **Assembly company:** Alexander Reinert, Marcello Cauchi Savona, Microsoft, Stratatel Ltd, stratatel
 - **Assembly copyright:** Copyright ©  2010, Copyright © Alexander Reinert 2010..2016, Copyright © Marcello Cauchi Savona, Copyright © Microsoft 2009, Copyright © Microsoft 2010, Copyright © Stratatel Ltd 2009, Copyright © Stratatel Ltd 2010, Copyright © Stratatel Ltd 2011, Copyright © stratatel 2008
 
