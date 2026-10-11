@@ -1,6 +1,6 @@
 # Infrastructure
 
-VS 2008 Stratatel Core.Network / Directory / FileTransfer / SQL / Security / Licensing / Compression working copy (.NET 3.5). Test.Form1 can StartServer/Connect on 192.168.1.2:80 and FTP-upload with credentials that are gitignored (see Form1.vb.example). Vendored ARSoft.Tools.Net (Alexander Reinert, Apache 2.0) and SmallDHCPServer_CodeProject sit beside the Stratatel projects. Open `Infrastructure.sln`. This is a historical working copy from Dave Robinson / VaderConsulting.
+VS 2008 Stratatel Core.Network / Directory / FileTransfer / SQL / Security / Licensing / Compression working copy (.NET 3.5). Test.Form1 can StartServer/Connect on 192.168.1.2:80 and FTP-upload with credentials that are gitignored (see Form1.vb.example). Vendored ARSoft.Tools.Net (Alexander Reinert, Apache 2.0) and SmallDHCPServer_CodeProject sit beside the Stratatel projects. Open `Infrastructure.sln`. This is a historical working copy from Dave Robinson / Vader Consulting.
 
 **Source last updated:** 2017-03-03  
 **Language:** C#, VB.NET  
@@ -9,7 +9,7 @@ VS 2008 Stratatel Core.Network / Directory / FileTransfer / SQL / Security / Lic
 
 ## What it is
 
-VS 2008 Stratatel Core.Network / Directory / FileTransfer / SQL / Security / Licensing / Compression working copy (.NET 3.5). Test.Form1 can StartServer/Connect on 192.168.1.2:80 and FTP-upload with credentials that are gitignored (see Form1.vb.example). Vendored ARSoft.Tools.Net (Alexander Reinert, Apache 2.0) and SmallDHCPServer_CodeProject sit beside the Stratatel projects. Open `Infrastructure.sln`. This is a historical working copy from Dave Robinson / VaderConsulting.
+VS 2008 Stratatel Core.Network / Directory / FileTransfer / SQL / Security / Licensing / Compression working copy (.NET 3.5). Test.Form1 can StartServer/Connect on 192.168.1.2:80 and FTP-upload with credentials that are gitignored (see Form1.vb.example). Vendored ARSoft.Tools.Net (Alexander Reinert, Apache 2.0) and SmallDHCPServer_CodeProject sit beside the Stratatel projects. Open `Infrastructure.sln`. This is a historical working copy from Dave Robinson / Vader Consulting.
 
 ## Solution structure
 
